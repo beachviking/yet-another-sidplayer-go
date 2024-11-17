@@ -1,0 +1,4 @@
+github.com/beevik/go6502 v0.3.0 h1:1Gsf1VZjZapXcQbrIzgnqHCPy9+4QuaUNZKyCVBGISY=
+github.com/beevik/go6502 v0.3.0/go.mod h1:RnOLF4I+55D4QsUn0BQK1Sy40dtjco/XHC+iI82IBU0=
+github.com/veandco/go-sdl2 v0.4.40 h1:fZv6wC3zz1Xt167P09gazawnpa0KY5LM7JAvKpX9d/U=
+github.com/veandco/go-sdl2 v0.4.40/go.mod h1:OROqMhHD43nT4/i9crJukyVecjPNYYuCofep6SNiAjY=
