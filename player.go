@@ -127,16 +127,16 @@ func (s *SidPlayer) setSIDModel(model resid.Model) {
 	}
 }
 
-func (s *SidPlayer) nextTune() {
-	s.playTune(uint16(s.currentSong + 1))
-}
+// func (s *SidPlayer) nextTune() {
+// 	s.playTune(uint16(s.currentSong + 1))
+// }
 
-func (s *SidPlayer) playTune(num uint16) {
-	s.currentSong = num
-	if s.isPlaying {
-		s.Start()
-	}
-}
+// func (s *SidPlayer) playTune(num uint16) {
+// 	s.currentSong = num
+// 	if s.isPlaying {
+// 		s.Start()
+// 	}
+// }
 
 func (s *SidPlayer) Start() {
 	if !s.isInitialized {
@@ -290,8 +290,8 @@ func (m *FlatMemoryWithNotification) AttachWriteNotifier(handler WriteNotificati
 	m.writeNotify = handler
 }
 
-// FlatMemorySidHooks creates a new 16-bit memory space with writes
-// to Resid component too.
+// FlatMemoryWithNotification creates a new 16-bit memory space with a
+// a notification mechanism to trigger writes to the Resid component too.
 func NewFlatMemoryWithNotification() *FlatMemoryWithNotification {
 	mem := FlatMemoryWithNotification{}
 	return &mem

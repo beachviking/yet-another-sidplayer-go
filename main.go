@@ -1,6 +1,6 @@
 package main
 
-// may be usefull to look at binary dumps in the terminal:
+// might be useful to look at binary dumps in the terminal:
 // od -h sidtune.dmp | less
 
 // typedef unsigned char Uint8;
@@ -20,8 +20,8 @@ import (
 )
 
 var (
-	opt    *SidPlayerSettings
-	player *SidPlayer
+	opt               *SidPlayerSettings
+	player            *SidPlayer
 	cpuplay_cnt_limit int = 882
 	cpuplay_cnt       int
 	dev               sdl.AudioDeviceID
@@ -31,13 +31,6 @@ const MAX_INSTR uint16 = 0xFFFF
 
 //export OnAudioCallback
 func OnAudioCallback(userdata unsafe.Pointer, stream *C.Uint8, length C.int) {
-
-	// isStereo := (obtained.Channels == 2)
-	// is16bit := !(obtained.Format == sdl.AUDIO_U8 || obtained.Format == sdl.AUDIO_S8 )
-
-	// if (isStereo) { length >>= 1 }
-
-	// if (is16bit) { length >>= 1 }
 
 	n := int(length)
 	hdr := reflect.SliceHeader{Data: uintptr(unsafe.Pointer(stream)), Len: n, Cap: n}
@@ -60,7 +53,7 @@ func OnAudioCallback(userdata unsafe.Pointer, stream *C.Uint8, length C.int) {
 		player.sid.Clock(resid.CycleCount(player.delta_t))
 		sample := (player.sid.Output())
 
-		// Write to output buffer
+		// Write to audio output buffer
 		sampleHi := (sample >> 8)
 		sampleLo := (sample & 0xFF)
 		buf[i] = C.Uint8(sampleLo)
@@ -90,9 +83,8 @@ func main() {
 	// get file name of sid tune
 	sidName := flag.Arg(0)
 
-	player.setSampleRate(SAMPLEFREQ)
-	player.setSIDModel(resid.MOS6581)
-
+	player.setSampleRate(uint32(opt.Samplefreq))
+	player.setSIDModel(resid.Model(opt.SidModel))
 	player.Load(sidName)
 
 	if err := sdl.Init(sdl.INIT_AUDIO); err != nil {
@@ -105,13 +97,17 @@ func main() {
 	spec.Callback = sdl.AudioCallback(C.OnAudioCallback)
 	spec.Samples = 4096
 	spec.Channels = 2
-	spec.Freq = int32(SAMPLEFREQ)
+	spec.Freq = int32(opt.Samplefreq)
 	spec.Format = sdl.AUDIO_S16SYS
 
 	var err error
 	if dev, err = sdl.OpenAudioDevice("", false, spec, nil, 0); err != nil {
 		log.Println(err)
 		return
+	}
+
+	if opt.Subtune > -1 {
+		player.currentSong = uint16(opt.Subtune)
 	}
 
 	player.Init()
