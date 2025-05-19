@@ -24,8 +24,8 @@ type SidFilter struct {
 	Voice3Off reg8
 
 	// Highpass, bandpass, and lowpass filter modes.
-	HpBpLp reg8 
-	
+	HpBpLp reg8
+
 	// Output master volume.
 	Volume reg4
 
@@ -88,7 +88,7 @@ func (f *SidFilter) WriteFC_LO(fc_lo reg8) {
 }
 
 func (f *SidFilter) WriteFC_HI(fc_hi reg8) {
-	f.Fc = ((reg12(fc_hi)<<3) & 0x7f8) | (f.Fc & 0x007)
+	f.Fc = ((reg12(fc_hi) << 3) & 0x7f8) | (f.Fc & 0x007)
 	f.SetW0()
 }
 
@@ -269,7 +269,7 @@ func (f *SidFilter) Clock(delta_t CycleCount, voice1 sound_sample, voice2 sound_
 		// Vhp = Vbp/Q - Vlp - Vi;
 		// dVbp = -w0*Vhp*dt;
 		// dVlp = -w0*Vbp*dt;
-		w0_delta_t := sound_sample(int(f.w0_ceil_dt) * int(delta_t_flt)>>6)
+		w0_delta_t := sound_sample(int(f.w0_ceil_dt) * int(delta_t_flt) >> 6)
 
 		dVbp := sound_sample(w0_delta_t * f.Vhp >> 14)
 		dVlp := sound_sample(w0_delta_t * f.Vbp >> 14)

@@ -8,7 +8,7 @@ const (
 	RELEASE
 )
 
-// Filter represents the filter in the SID chip.
+// The ADSR envelope generator in the SID chip.
 type EnvelopeGenerator struct {
 	rate_counter               reg16
 	rate_period                reg16
